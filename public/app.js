@@ -7,37 +7,21 @@ const nowPlayingTitle = document.getElementById('nowPlayingTitle');
 const nowPlayingArtist = document.getElementById('nowPlayingArtist');
 const playerPanel = document.getElementById('playerPanel');
 
-const STORAGE_KEY = 'soundwave-songs';
 let songsCache = [];
 
-function readSongs() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  } catch {
-    return [];
+async function fetchSongs(query = '') {
+  const suffix = query ? `?search=${encodeURIComponent(query)}` : '';
+  const response = await fetch(`/api/songs${suffix}`);
+  if (!response.ok) {
+    throw new Error('Failed to load songs from server.');
   }
+  return response.json();
 }
 
-function writeSongs(songs) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(songs));
-}
-
-function loadSongs(query = '') {
-  const songs = readSongs();
-  const normalizedQuery = query.trim().toLowerCase();
+async function loadSongs(query = '') {
+  const songs = await fetchSongs(query.trim());
   songsCache = songs;
-
-  if (!normalizedQuery) {
-    renderSongs(songs);
-    return;
-  }
-
-  const filtered = songs.filter((song) => {
-    const haystack = `${song.title} ${song.artist} ${song.genre}`.toLowerCase();
-    return haystack.includes(normalizedQuery);
-  });
-
-  renderSongs(filtered);
+  renderSongs(songs);
 }
 
 function renderSongs(songs) {
@@ -94,23 +78,30 @@ uploadForm.addEventListener('submit', async (event) => {
       throw new Error('Please upload a valid audio file.');
     }
 
-    const songDataUrl = await fileToDataUrl(songFile);
-    const songs = readSongs();
+    const dataUrl = await fileToDataUrl(songFile);
+    const response = await fetch('/api/songs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, artist, genre, dataUrl })
+    });
 
-    const newSong = {
-      id: Date.now().toString(),
-      title,
-      artist,
-      genre,
-      dataUrl: songDataUrl
-    };
+    const payload = await response.json();
 
-    songs.unshift(newSong);
-    writeSongs(songs);
+    if (!response.ok) {
+      throw new Error(payload.error || 'Upload failed.');
+    }
 
     uploadForm.reset();
-    setStatus('Song uploaded successfully!');
-    loadSongs(searchInput.value);
+
+    if (payload.githubSync?.synced) {
+      setStatus('Song uploaded and synced to GitHub.');
+    } else if (payload.githubSync?.reason && payload.githubSync.reason !== 'GitHub sync not configured') {
+      setStatus(`Uploaded locally, but GitHub sync failed: ${payload.githubSync.reason}`, true);
+    } else {
+      setStatus('Song uploaded to server storage.');
+    }
+
+    await loadSongs(searchInput.value);
   } catch (error) {
     setStatus(error.message, true);
   }
@@ -130,13 +121,13 @@ songList.addEventListener('click', (event) => {
 
   nowPlayingTitle.textContent = song.title;
   nowPlayingArtist.textContent = `${song.artist} • ${song.genre}`;
-  audioPlayer.src = song.dataUrl;
+  audioPlayer.src = song.url;
   audioPlayer.play();
   playerPanel.hidden = false;
 });
 
 searchInput.addEventListener('input', () => {
-  loadSongs(searchInput.value);
+  loadSongs(searchInput.value).catch((error) => setStatus(error.message, true));
 });
 
-loadSongs();
+loadSongs().catch((error) => setStatus(error.message, true));
