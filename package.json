@@ -1,0 +1,11 @@
+{
+  "name": "spotify-clone",
+  "version": "1.0.0",
+  "description": "Spotify-like app for uploading, discovering, and playing songs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test tests/api.test.js"
+  }
+}
