@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoundWave Premium</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <h1>SoundWave</h1>
+        <nav>
+          <button data-tab="home" class="tab active">Home</button>
+          <button data-tab="search" class="tab">Search</button>
+          <button data-tab="library" class="tab">Your Library</button>
+          <button data-tab="profile" class="tab">Profile</button>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section id="authPanel" class="card">
+          <h2>Login / Register</h2>
+          <form id="authForm" class="grid">
+            <input name="displayName" placeholder="Display name (register)" />
+            <input name="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Password" required />
+            <div class="row">
+              <button type="submit" name="mode" value="login">Login</button>
+              <button type="submit" name="mode" value="register">Register</button>
+            </div>
+            <p id="authStatus" class="status"></p>
+          </form>
+        </section>
+
+        <section id="home" class="view active">
+          <h2>Made For You</h2>
+          <div id="recommendations" class="list"></div>
+        </section>
+
+        <section id="search" class="view">
+          <div class="row">
+            <input id="searchInput" placeholder="Search songs, artists, genres" />
+            <button id="premiumBtn">Upgrade Premium</button>
+          </div>
+          <div id="songResults" class="list"></div>
+        </section>
+
+        <section id="library" class="view">
+          <h2>Your Library</h2>
+          <form id="playlistForm" class="row">
+            <input name="playlistName" placeholder="New playlist name" required />
+            <button>Create Playlist</button>
+          </form>
+          <div id="libraryData" class="list"></div>
+        </section>
+
+        <section id="profile" class="view">
+          <h2>Profile</h2>
+          <div id="profileData" class="card"></div>
+
+          <h3>Upload Song</h3>
+          <form id="uploadForm" class="grid">
+            <input name="title" placeholder="Song title" required />
+            <input name="artist" placeholder="Artist" required />
+            <input name="album" placeholder="Album" />
+            <input name="genre" placeholder="Genre" />
+            <input name="songFile" type="file" accept="audio/*" required />
+            <button>Upload</button>
+            <p id="uploadStatus" class="status"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <footer class="player">
+      <div>
+        <strong id="nowPlaying">Nothing playing</strong>
+        <small id="nowPlayingMeta"></small>
+      </div>
+      <audio id="audioPlayer" controls></audio>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+node_modules/
+data/spotify.db
+uploads/*
+!uploads/.gitkeep
