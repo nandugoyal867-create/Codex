@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoundWave - Spotify Clone</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>SoundWave</h1>
+      <p>Discover, upload, and play your music.</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel upload-panel">
+        <h2>Upload Song</h2>
+        <form id="uploadForm">
+          <label>
+            Song Title
+            <input type="text" name="title" required />
+          </label>
+          <label>
+            Artist
+            <input type="text" name="artist" required />
+          </label>
+          <label>
+            Genre
+            <input type="text" name="genre" placeholder="Pop, Rock, Lofi..." />
+          </label>
+          <label>
+            Audio File
+            <input type="file" name="songFile" accept="audio/*" required />
+          </label>
+          <button type="submit">Upload</button>
+          <p id="uploadStatus" class="status"></p>
+        </form>
+      </section>
+
+      <section class="panel library-panel">
+        <div class="library-header">
+          <h2>Music Library</h2>
+          <input id="searchInput" type="search" placeholder="Search songs, artist, genre..." />
+        </div>
+        <ul id="songList" class="song-list"></ul>
+      </section>
+    </main>
+
+    <footer class="player" id="playerPanel" hidden>
+      <div>
+        <strong id="nowPlayingTitle">Select a song</strong>
+        <p id="nowPlayingArtist"></p>
+      </div>
+      <audio id="audioPlayer" controls></audio>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
