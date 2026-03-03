@@ -1,0 +1,150 @@
+:root {
+  --bg: #121212;
+  --panel: #181818;
+  --card: #242424;
+  --accent: #1db954;
+  --text: #ffffff;
+  --muted: #b3b3b3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, #1f1f1f, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+.topbar {
+  padding: 1.5rem 2rem;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.topbar p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  gap: 1rem;
+  padding: 0 2rem 2rem;
+}
+
+.panel {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.upload-panel form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input, button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.65rem;
+  font-size: 0.95rem;
+}
+
+input[type='text'],
+input[type='search'],
+input[type='file'] {
+  background: #2f2f2f;
+  color: var(--text);
+}
+
+button {
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.song-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.song-item {
+  background: var(--card);
+  padding: 0.75rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.song-meta p {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.song-item button {
+  min-width: 80px;
+}
+
+.status {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+}
+
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.8rem 1.2rem;
+  background: #0f0f0f;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.player p {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+}
+
+audio {
+  width: min(520px, 100%);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
