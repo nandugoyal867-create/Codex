@@ -3,53 +3,80 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SoundWave - Spotify Clone</title>
+    <title>SoundWave Premium</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="topbar">
-      <h1>SoundWave</h1>
-      <p>Discover, upload, and play your music.</p>
-    </header>
+    <div class="app">
+      <aside class="sidebar">
+        <h1>SoundWave</h1>
+        <nav>
+          <button data-tab="home" class="tab active">Home</button>
+          <button data-tab="search" class="tab">Search</button>
+          <button data-tab="library" class="tab">Your Library</button>
+          <button data-tab="profile" class="tab">Profile</button>
+        </nav>
+      </aside>
 
-    <main class="layout">
-      <section class="panel upload-panel">
-        <h2>Upload Song</h2>
-        <form id="uploadForm">
-          <label>
-            Song Title
-            <input type="text" name="title" required />
-          </label>
-          <label>
-            Artist
-            <input type="text" name="artist" required />
-          </label>
-          <label>
-            Genre
-            <input type="text" name="genre" placeholder="Pop, Rock, Lofi..." />
-          </label>
-          <label>
-            Audio File
-            <input type="file" name="songFile" accept="audio/*" required />
-          </label>
-          <button type="submit">Upload</button>
-          <p id="uploadStatus" class="status"></p>
-        </form>
-      </section>
+      <main class="content">
+        <section id="authPanel" class="card">
+          <h2>Login / Register</h2>
+          <form id="authForm" class="grid">
+            <input name="displayName" placeholder="Display name (register)" />
+            <input name="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Password" required />
+            <div class="row">
+              <button type="submit" name="mode" value="login">Login</button>
+              <button type="submit" name="mode" value="register">Register</button>
+            </div>
+            <p id="authStatus" class="status"></p>
+          </form>
+        </section>
 
-      <section class="panel library-panel">
-        <div class="library-header">
-          <h2>Music Library</h2>
-          <input id="searchInput" type="search" placeholder="Search songs, artist, genre..." />
-        </div>
-        <ul id="songList" class="song-list"></ul>
-      </section>
-    </main>
+        <section id="home" class="view active">
+          <h2>Made For You</h2>
+          <div id="recommendations" class="list"></div>
+        </section>
 
-    <footer class="player" id="playerPanel" hidden>
+        <section id="search" class="view">
+          <div class="row">
+            <input id="searchInput" placeholder="Search songs, artists, genres" />
+            <button id="premiumBtn">Upgrade Premium</button>
+          </div>
+          <div id="songResults" class="list"></div>
+        </section>
+
+        <section id="library" class="view">
+          <h2>Your Library</h2>
+          <form id="playlistForm" class="row">
+            <input name="playlistName" placeholder="New playlist name" required />
+            <button>Create Playlist</button>
+          </form>
+          <div id="libraryData" class="list"></div>
+        </section>
+
+        <section id="profile" class="view">
+          <h2>Profile</h2>
+          <div id="profileData" class="card"></div>
+
+          <h3>Upload Song</h3>
+          <form id="uploadForm" class="grid">
+            <input name="title" placeholder="Song title" required />
+            <input name="artist" placeholder="Artist" required />
+            <input name="album" placeholder="Album" />
+            <input name="genre" placeholder="Genre" />
+            <input name="songFile" type="file" accept="audio/*" required />
+            <button>Upload</button>
+            <p id="uploadStatus" class="status"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <footer class="player">
       <div>
-        <strong id="nowPlayingTitle">Select a song</strong>
-        <p id="nowPlayingArtist"></p>
+        <strong id="nowPlaying">Nothing playing</strong>
+        <small id="nowPlayingMeta"></small>
       </div>
       <audio id="audioPlayer" controls></audio>
     </footer>

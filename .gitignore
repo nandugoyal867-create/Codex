@@ -1,5 +1,4 @@
 node_modules/
-data/songs.json
+data/spotify.db
 uploads/*
 !uploads/.gitkeep
-!data/.gitkeep

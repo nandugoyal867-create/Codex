@@ -1,43 +1,63 @@
-# SoundWave (Spotify-Inspired Clone)
+# SoundWave – Spotify-like Streaming App
 
-A Spotify-style music web app where users can:
+SoundWave is a modular Spotify-inspired web app with:
 
-- Upload their audio tracks
-- Search and discover songs
-- Play tracks from a bottom audio player
+- Authentication (register/login with token sessions)
+- Real-time activity feed (Server-Sent Events)
+- Music upload and optimized streaming (HTTP range requests)
+- Search (songs/artists/genres)
+- Playlists and liked songs
+- User profile and listening history
+- Recommendation endpoint based on listening behavior
+- Premium upgrade logic (e.g. 320kbps stream gate)
+- Relational database architecture (SQLite)
 
-## Run locally
+## Tech Architecture
+
+- **Frontend:** Modular vanilla JS components + dark Spotify-style UI
+- **Backend:** Node HTTP API
+- **Database:** SQLite (`node:sqlite`) with relational tables
+- **Streaming optimization:** Partial content (`206`) + `Accept-Ranges` + caching headers
+- **Realtime:** `/api/events` via SSE
+
+## Relational Data Model
+
+Core tables implemented:
+
+- `users`
+- `artists`
+- `albums`
+- `songs`
+- `playlists`
+- `playlist_songs` (many-to-many)
+- `user_liked_songs`
+- `user_history`
+- `user_followers`
+
+Database file: `data/spotify.db`
+
+## Run
 
 ```bash
+npm test
 node server.js
 ```
 
 Open: `http://localhost:3000`
 
-## Storage model
+## API Highlights
 
-- Uploaded songs are saved on the server filesystem in `uploads/`
-- Song metadata is saved in `data/songs.json`
+- `POST /api/auth/register`, `POST /api/auth/login`
+- `GET /api/me`
+- `GET /api/songs`, `POST /api/songs`
+- `GET /api/stream/:id` (supports `Range`)
+- `GET /api/recommendations`
+- `POST /api/playlists`, `POST /api/playlists/:id/songs`
+- `GET /api/library`
+- `POST /api/likes`
+- `POST /api/premium/upgrade`
+- `GET /api/events`
 
-## Save uploaded songs to GitHub (optional)
+## Notes
 
-Yes — you can configure automatic GitHub sync. When enabled, each upload is pushed to your GitHub repository using the GitHub Contents API.
-
-Set these environment variables before starting the server:
-
-- `GITHUB_TOKEN`: GitHub token with repo write access
-- `GITHUB_REPO`: repository in `owner/repo` format
-- `GITHUB_BRANCH` (optional): target branch (default `main`)
-- `GITHUB_BASE_PATH` (optional): folder path in repo (default `storage`)
-
-Example:
-
-```bash
-GITHUB_TOKEN=ghp_xxx \
-GITHUB_REPO=my-user/my-music-repo \
-GITHUB_BRANCH=main \
-GITHUB_BASE_PATH=soundwave \
-node server.js
-```
-
-When configured, uploads are still stored locally and also synced to GitHub.
+This is a production-style architecture demo in a lightweight single-service setup. For internet-scale usage, move media storage to S3/CDN, use Redis caching, and split auth/streaming/recommendation into separate services.
